@@ -31,26 +31,26 @@ N = 125;
 	toc;
 
 %% lets try to do the successive algorithm under noise
-	clear all;
-	close all;
-	load output_golden.mat
+clear all;
+close all;
+load output_golden.mat
 
-	dt = tf_opt/(N-1);
-	index = 0;
-	for tf_opt = tf_opt: -dt : 0
-		index = index + 1;
-		[m_used, r, v, u, m] = lander(tf_opt, r_0, v_0, r_N, v_N, p, N);
-		r_0 = r(:,2) - rand(3,1);
-	 	v_0 = v(:,2) - rand(3,1);
-		p.m_f = m(2) - p.m_d;
-		r_saved(:,index) = r(:,1);
-		u_saved(:,index) = u(:,1);
-		v_saved(:,index) = v(:,1);
-		m_saved(:,index) = m(:,1);
-	    'one loop done'
-	end
-	tv = linspace(0, tf_opt, index-1);
-	plot_outer_3D(tv, r_saved, v_saved, u_saved, m_saved);
+dt = tf_opt/(N-1);
+index = 0;
+for tf_opt = tf_opt: -dt : 0
+	index = index + 1;
+	[m_used, r, v, u, m] = lander(tf_opt, r_0, v_0, r_N, v_N, p, N);
+	r_0 = r(:,2) - rand(3,1);
+ 	v_0 = v(:,2);
+	p.m_f = p.m_f - m_used;
+	r_saved(:,index) = r(:,1);
+	u_saved(:,index) = u(:,1);
+	v_saved(:,index) = v(:,1);
+	m_saved(:,index) = m(:,1);
+    'one loop done'
+end
+tv = linspace(0, tf_opt, index-1);
+plot_outer_3D(tv, r_saved, v_saved, u_saved, m_saved);
 
 
 

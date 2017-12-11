@@ -47,7 +47,7 @@ function [m_used, r, v, u, m] = lander(t_f, r_0, v_0, r_N, v_N, p, N)
 	if strcmp(cvx_status, 'Solved')
 	    m_used = m(1) - m(N);
 	else
-	    fprintf('Error! %s', cvx_status);
+	    fprintf('Error! %s \n', cvx_status);
 	end
 
 end
