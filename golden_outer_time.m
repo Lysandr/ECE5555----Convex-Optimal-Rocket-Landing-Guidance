@@ -16,13 +16,14 @@ t_fmin = 0;
 t_fmax = 100;
 N = 200;
 
-obj_fun = @(t_f)(lander(t_f, r_0, v_0, r_N, v_N, p, N));
-options = optimset('TolX',0.5,'Display','iter');
-tf_opt = fminbnd(obj_fun, t_fmin, t_fmax, options);
+% here wi sill
+		obj_fun = @(t_f)(lander(t_f, r_0, v_0, r_N, v_N, p, N));
+		options = optimset('TolX',0.5,'Display','iter'); 
+		tf_opt = fminbnd(obj_fun, t_fmin, t_fmax, options);
 
-% Re-run optimal case
-[m_used, r, v, u, m] = lander(tf_opt, r_0, v_0, r_N, v_N, p, N);
-tv = linspace(0, tf_opt, N);
-plot_outer_3D(tv, r, v, u, m)
-toc;
+% plot the output of the optimizer
+	[m_used, r, v, u, m] = lander(tf_opt, r_0, v_0, r_N, v_N, p, N);
+	tv = linspace(0, tf_opt, N);
+	plot_outer_3D(tv, r, v, u, m)
+	toc;
 
