@@ -1,6 +1,5 @@
-function [m_used, r, v, u, m] = lander(t_f, r_0, v_0, r_N, v_N, p)
+function [m_used, r, v, u, m] = lander(t_f, r_0, v_0, r_N, v_N, p, N)
 % constants and vehicle parameters
-    N = 100;
 	dt = t_f/(N-1);            		% period of calculation
 	a = 1/(p.Isp*p.g0);			% alpha used in mass calculations
 	gs = 4;						% glides slope constraint
@@ -40,16 +39,13 @@ function [m_used, r, v, u, m] = lander(t_f, r_0, v_0, r_N, v_N, p)
 				s(1,k) >= m_1*(1 - (z(1,k) - z0) + (((z(1,k) - z0)^2)/2));
 			end
 	cvx_end
-
-
+	m_used = m_t;
+	m = exp(z);
 	if strcmp(cvx_status, 'Solved')
-	    m = exp(z);
 	    m_used = m(1) - m(N);
-	elseif strcmp(cvx_status, 'Infeasible')
-	    m_used = m_t;
 	else
 	    fprintf('Error! %s', cvx_status);
-    end
+	end
 
 end
 
