@@ -1,6 +1,3 @@
-
-
-
 tic;
 p.g0 = 9.807;				% Earth gravity, m/s^2
 p.g_plan = [0; 0;-3.711];	% Other planet gravity, m/s^2

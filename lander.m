@@ -4,6 +4,8 @@ function [m_used, r, v, u, m] = lander(t_f, r_0, v_0, r_N, v_N, p, N)
 	a = 1/(p.Isp*p.g0);			% alpha used in mass calculations
 	gs = 4;						% glides slope constraint
 	m_t = p.m_d + p.m_f;
+	tv_max = 25;			% maximum TVC angle
+
 
 	cvx_begin QUIET
 		variables u(3,N) z(1,N) s(1,N) r(3,N) v(3,N)
@@ -16,8 +18,9 @@ function [m_used, r, v, u, m] = lander(t_f, r_0, v_0, r_N, v_N, p, N)
 			z(1) == log(m_t);	% mass IC
 
 			r(3,:) >= 0;							% plz don't crash into the ground
-			%u(2,:) >= s.*cos(degtorad(tv_max));		% thrust vector control constraint
-			%r(1,:) <= r(2,:)/tan(degtorad(gs));		% glide slope
+			u(3,:) >= s.*cos(degtorad(tv_max));		% thrust vector control constraint
+			r(1,:) <= r(3,:)/tan(degtorad(gs));		% glide slope
+            r(2,:) <= r(3,:)/tan(degtorad(gs));
 	        z(:) >= 0;
 
 			for  k = 1:N-1
